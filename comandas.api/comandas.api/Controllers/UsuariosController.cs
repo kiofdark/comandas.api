@@ -26,28 +26,61 @@ namespace comandas.api.Controllers
 
         // GET api/<UsuariosController>/5
         [HttpGet("{id}")]
-        public UsuarioResponse Get(int id)
+        public ActionResult<UsuarioResponse> Get(int id)
         {
-           var usuario =  _context.Usuarios.First(u => u.Id == id);
-              return new UsuarioResponse { Id = usuario.Id, Nome = usuario.Nome, Email = usuario.Email};
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == id);
+            if (usuario == null)
+            {
+                return NotFound("Usuário não encontrado");
+            }
+
+            return new UsuarioResponse { Id = usuario.Id, Nome = usuario.Nome, Email = usuario.Email };
         }
 
         // POST api/<UsuariosController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<Usuario> Post([FromBody] UsuarioCreateRequest usuarioCreateRequest)
         {
+            var usuario = new Usuario
+            {
+                Nome = usuarioCreateRequest.Nome,
+                Email = usuarioCreateRequest.Email,
+                Senha = usuarioCreateRequest.Senha
+            };
+            _context.Usuarios.Add(usuario);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(Get), new { id = usuario.Id }, usuario);
         }
 
         // PUT api/<UsuariosController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(int id, [FromBody] UsuarioUpdateRequest usuarioUpdateRequest)
         {
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == id);
+            if(usuario == null)
+            {
+                return NotFound();
+            }
+            usuario.Nome = usuarioUpdateRequest.Nome;
+            usuario.Email = usuarioUpdateRequest.Email;
+            usuario.Senha = usuarioUpdateRequest.Senha;
+            _context.SaveChanges();
+
+            return NoContent();
         }
 
         // DELETE api/<UsuariosController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == id);
+            if(usuario == null)
+            {
+                return NotFound();
+            }
+            _context.Usuarios.Remove(usuario);
+            _context.SaveChanges();
+            return NoContent();
         }
     }
 }
