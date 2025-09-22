@@ -1,3 +1,4 @@
+using comandas.api;
 using comandas.api.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,5 +27,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+InicializarDados.Inicializar(app.Services.CreateScope().ServiceProvider.GetRequiredService<ComandasDbContext>());
 
 app.Run();
+
