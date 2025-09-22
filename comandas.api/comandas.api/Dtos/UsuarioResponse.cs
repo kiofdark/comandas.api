@@ -1,4 +1,4 @@
-﻿namespace comandas.api.Dtos
+﻿    namespace comandas.api.Dtos
 {
     public class UsuarioResponse
     {
