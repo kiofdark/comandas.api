@@ -39,7 +39,7 @@ namespace comandas.api.Controllers
                 }).FirstOrDefault();
 
             if (mesa == null)
-            {
+        {
                 return NotFound("Mesa não encontrada");
             }
 
@@ -52,7 +52,7 @@ namespace comandas.api.Controllers
         public ActionResult<MesaResponse> Post([FromBody] MesaCreateRequest createRequest)
         {
             var newMesa = new Domain.Mesa
-            {
+        {
                 NumeroMesa = createRequest.NumeroMesa,
                 SituacaoMesa = createRequest.SituacaoMesa
             };
@@ -68,7 +68,7 @@ namespace comandas.api.Controllers
         {
             var mesa = _context.Mesas.FirstOrDefault(m => m.Id == id);
             if(mesa == null)
-            {
+        {
                 return NotFound("Mesa não encontrada");
             }
             mesa.NumeroMesa = updateRequest.NumeroMesa;
@@ -83,7 +83,7 @@ namespace comandas.api.Controllers
         {
             var mesa = _context.Mesas.FirstOrDefault(m => m.Id == id);
             if (mesa == null)
-            {
+        {
                 return NotFound("Mesa não encontrada");
             }
             _context.Mesas.Remove(mesa);
